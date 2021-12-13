@@ -1,0 +1,42 @@
+version: '3.8'
+services:
+  log4j2-vuln:
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    logging:
+      driver: none
+    networks:
+      net:
+        ipv4_address: 172.16.238.11
+    dns:
+      - 172.16.238.10
+    ports:
+      - "8080:8080"
+    environment:
+      - SECRET_VAR=12345
+  log4j2-vuln-dnsmasq:
+    image: jpillora/dnsmasq
+    logging:
+      options:
+        max-file: "5"
+        max-size: "10m"
+    networks:
+      net:
+        ipv4_address: 172.16.238.10
+    volumes:
+      - ./dnsmasq.conf:/etc/dnsmasq.conf
+    ports:
+      - "53:53/udp"
+      - "5380:8080"
+    cap_add:
+      - NET_ADMIN
+networks:
+  net:
+    # use the bridge driver, but enable IPv6
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.16.238.0/24
+          gateway: 172.16.238.1

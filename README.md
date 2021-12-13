@@ -8,6 +8,8 @@
 
 ## Running Locally
 
+![demo](demo.gif)
+
 In one terminal tab run:
 
 ```bash

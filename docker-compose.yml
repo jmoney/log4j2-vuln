@@ -4,8 +4,6 @@ services:
     build:
       context: ./
       dockerfile: Dockerfile
-    logging:
-      driver: none
     networks:
       net:
         ipv4_address: 172.16.238.11
